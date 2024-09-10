@@ -8,14 +8,25 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State var vm = PhotoViewModel()
+    @State var authorization = Authorization()
+    @State var currentUserViewModel = CurrentUserViewModel()
+    
+    func deepLinkHandler(url: URL){
+        guard let code = AuthorizeAction.urlCodeHandler(url: url) else {return}
+        authorization.login(code: code)
+    }
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        if vm.isIniting {
+            SplashView().onAppear(perform: vm.initData)
+        } else {
+            RootStack()
+                .environment(vm)
+                .environment(authorization)
+                .environment(currentUserViewModel)
+                .onOpenURL(perform: deepLinkHandler)
         }
-        .padding()
     }
 }
 

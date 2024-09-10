@@ -8,7 +8,7 @@
 import SwiftUI
 
 @main
-struct UnsplashApp: App {
+struct UnsplashApp: App {    
     var body: some Scene {
         WindowGroup {
             ContentView()
